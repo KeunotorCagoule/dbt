@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: mrt_sales_performance
+    description: "Table dénormalisée regroupant les ventes, les produits et les clients pour l'analyse globale du chiffre d'affaires."
+    columns:
+      - name: order_id
+        description: "Identifiant unique de la commande."
+      - name: order_date
+        description: "Date à laquelle la commande a été passée."
+      - name: order_status
+        description: "Statut d'avancement de la commande (ex: 4 pour livrée)."
+      - name: quantity
+        description: "Nombre d'articles vendus sur cette ligne."
+      - name: item_revenue
+        description: "Chiffre d'affaires net calculé pour la ligne de commande (quantité * prix * (1 - réduction))."
+      - name: store_name
+        description: "Nom du magasin physique où la vente a eu lieu."
+      - name: product_name
+        description: "Nom du produit vendu."
+      - name: category_name
+        description: "Catégorie du produit."
+      - name: customer_full_name
+        description: "Nom et prénom concaténés du client."
+
+  - name: mrt_inventory_monitoring
+    description: "Table de suivi logistique de l'état des stocks par magasin et par produit."
+    columns:
+      - name: store_name
+        description: "Nom du magasin."
+      - name: product_name
+        description: "Nom du produit suivi en stock."
+      - name: current_stock
+        description: "Quantité physique actuellement disponible en rayon ou en réserve."
+      - name: stock_alert_status
+        description: "Indicateur textuel et visuel de l'état du stock pour faciliter la lecture dans l'outil de BI."
+
+  - name: mrt_team_performance
+    description: "Table d'analyse RH croisant le chiffre d'affaires avec les équipes de vente."
+    columns:
+      - name: order_id
+        description: "Identifiant de la commande."
+      - name: order_date
+        description: "Date de la réalisation de la vente."
+      - name: item_revenue
+        description: "Valeur en dollars générée par l'employé sur cette ligne."
+      - name: staff_full_name
+        description: "Nom complet du vendeur."
+      - name: manager_full_name
+        description: "Nom complet du manager supervisant ce vendeur."
+      - name: is_active
+        description: "Statut booléen indiquant si l'employé fait toujours partie des effectifs de l'entreprise."
