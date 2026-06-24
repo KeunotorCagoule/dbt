@@ -1,0 +1,99 @@
+version: 2
+
+sources:
+  - name: sales_database
+    tables:
+      - name: order
+      - name: order_items
+
+models:
+  - name: stg_sales_database_order
+    description: "Cleaned staging model for the internal orders table. Contains order-level metadata."
+    columns:
+      - name: order_id
+        description: "Primary key. Unique identifier for the order."
+        tests:
+          - unique:
+              name: assert_unique_order_id
+          - not_null:
+              name: assert_not_null_order_id
+      - name: user_id
+        description: "Foreign key referencing the user who placed the order."
+        tests:
+          - not_null:
+              name: assert_not_null_order_user_id
+          - relationships:
+              name: assert_order_user_id_exists_in_user_table
+              arguments:
+                to: ref('stg_sales_database_user')
+                field: user_id
+      - name: order_created_at
+        description: "Timestamp when the order was placed. Converted to a standard date format if necessary."
+
+  - name: stg_sales_database_order_items
+    description: "Cleaned staging model detailing individual items within a specific order."
+    columns:
+      - name: order_item_id
+        description: "Primary key. Unique identifier for the order item line."
+        tests:
+          - unique:
+              name: assert_unique_order_item_id
+          - not_null:
+              name: assert_not_null_order_item_id
+      - name: order_id
+        description: "Foreign key referencing the parent order in the order model."
+        tests:
+          - not_null:
+              name: assert_not_null_item_order_id
+          - relationships:
+              name: assert_item_order_id_exists_in_order_table
+              arguments:
+                to: ref('stg_sales_database_order')
+                field: order_id
+      - name: product_id
+        description: "Foreign key referencing the purchased product catalog."
+      - name: price
+        description: "Unit price of the product at the time of purchase."
+
+  - name: stg_sales_database_user
+    description: "Cleaned staging model containing user demographic and location data."
+    columns:
+      - name: user_id
+        description: "Primary key. Unique identifier for the registered user."
+        tests:
+          - unique:
+              name: assert_unique_user_id
+          - not_null:
+              name: assert_not_null_user_id
+      - name: user_state
+        description: "State or region where the user is geographically located."
+
+  - name: stg_sales_database_feedback
+    description: "Cleaned staging model for customer feedback and ratings on specific orders."
+    columns:
+      - name: feedback_id
+        description: "Primary key. Unique identifier for the feedback entry."
+        tests:
+          - unique:
+              name: assert_unique_feedback_id
+          - not_null:
+              name: assert_not_null_feedback_id
+      - name: order_id
+        description: "Foreign key linking the customer feedback to a specific order."
+        tests:
+          - not_null:
+              name: assert_not_null_feedback_order_id
+          - relationships:
+              name: assert_feedback_order_id_exists_in_order_table
+              arguments:
+                to: ref('stg_sales_database_order')
+                field: order_id
+      - name: score
+        description: "Numerical satisfaction rating given by the customer."
+        tests:
+          - not_null:
+              name: assert_not_null_feedback_score
+          - accepted_values:
+              name: assert_valid_feedback_score
+              arguments:
+                values: [1, 2, 3, 4, 5]
