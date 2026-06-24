@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: local_bike
+    database: project-dd3ac834-43da-4d2d-afe
+    schema: local_bike_raw 
+    tables:
+      - name: customers
+      - name: staffs
+      - name: stores
+      - name: orders
+      - name: order_items
+      - name: categories
+      - name: products
+      - name: stocks
+      - name: brands
