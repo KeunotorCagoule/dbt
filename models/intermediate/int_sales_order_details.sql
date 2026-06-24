@@ -8,6 +8,7 @@ order_items AS (
 
 joined AS (
     SELECT
+        CONCAT(CAST(o.order_id AS STRING), '-', CAST(oi.item_id AS STRING)) AS order_item_id,
         o.order_id,
         o.order_date,
         o.order_status,

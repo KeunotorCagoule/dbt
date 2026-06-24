@@ -11,7 +11,10 @@ renamed AS (
         phone,
         CAST(active AS BOOLEAN) AS is_active,
         CAST(store_id AS STRING) AS store_id,
-        CAST(manager_id AS STRING) AS manager_id
+        CASE 
+            WHEN UPPER(TRIM(CAST(manager_id AS STRING))) IN ('NULL', 'NONE', '') THEN CAST(NULL AS STRING)
+            ELSE CAST(manager_id AS STRING)
+        END AS manager_id
     FROM source
 )
 
