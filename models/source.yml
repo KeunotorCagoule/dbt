@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: local_bike
     database: project-dd3ac834-43da-4d2d-afe
-    schema: local_bike_raw 
+    schema: public 
     tables:
       - name: customers
       - name: staffs
