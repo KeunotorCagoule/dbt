@@ -7,11 +7,20 @@ renamed AS (
         order_id,
         customer_id,
         order_status,
-        CAST(order_date AS DATE) AS order_date,
-        CAST(required_date AS DATE) AS required_date,
-        CAST(shipped_date AS DATE) AS shipped_date,
+        CASE 
+            WHEN UPPER(TRIM(CAST(order_date AS STRING))) IN ('NULL', 'NONE', '') THEN CAST(NULL AS DATE)
+            ELSE CAST(order_date AS DATE)
+        END AS order_date,
+        CASE 
+            WHEN UPPER(TRIM(CAST(required_date AS STRING))) IN ('NULL', 'NONE', '') THEN CAST(NULL AS DATE)
+            ELSE CAST(required_date AS DATE)
+        END AS required_date,
+        CASE 
+            WHEN UPPER(TRIM(CAST(shipped_date AS STRING))) IN ('NULL', 'NONE', '') THEN CAST(NULL AS DATE)
+            ELSE CAST(shipped_date AS DATE)
+        END AS shipped_date,
         store_id,
-        CAST(staff_id AS STRING) AS staff_id
+        staff_id
     FROM source
 )
 
