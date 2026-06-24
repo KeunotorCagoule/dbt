@@ -11,7 +11,7 @@ renamed AS (
         CAST(required_date AS DATE) AS required_date,
         CAST(shipped_date AS DATE) AS shipped_date,
         store_id,
-        staff_id
+        CAST(staff_id AS STRING) AS staff_id
     FROM source
 )
 
