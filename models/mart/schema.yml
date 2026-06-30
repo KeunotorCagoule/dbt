@@ -6,8 +6,12 @@ models:
     columns:
       - name: order_id
         description: "Identifiant unique de la commande."
+        tests:
+          - not_null
       - name: order_date
         description: "Date à laquelle la commande a été passée."
+        tests:
+          - not_null
       - name: order_status
         description: "Statut d'avancement de la commande (ex: 4 pour livrée)."
       - name: quantity
@@ -34,18 +38,28 @@ models:
         description: "Quantité physique actuellement disponible en rayon ou en réserve."
       - name: stock_alert_status
         description: "Indicateur textuel et visuel de l'état du stock pour faciliter la lecture dans l'outil de BI."
+        tests:
+          - not_null
+          # Voici la nouvelle syntaxe exigée par dbt Fusion :
+          - accepted_values:
+              arguments:
+                values: ['Rupture', 'Alerte', 'En stock']
 
   - name: mrt_team_performance
     description: "Table d'analyse RH croisant le chiffre d'affaires avec les équipes de vente."
     columns:
       - name: order_id
         description: "Identifiant de la commande."
+        tests:
+          - not_null
       - name: order_date
         description: "Date de la réalisation de la vente."
       - name: item_revenue
         description: "Valeur en dollars générée par l'employé sur cette ligne."
       - name: staff_full_name
         description: "Nom complet du vendeur."
+        tests:
+          - not_null
       - name: manager_full_name
         description: "Nom complet du manager supervisant ce vendeur."
       - name: is_active

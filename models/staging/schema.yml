@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: stg_sales_orders
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      
+      - name: order_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4]
+                quote: false 
+
+      - name: store_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_sales_stores')
+                field: store_id
+
+      - name: staff_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_sales_staffs')
+                field: staff_id
+
+      - name: customer_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_sales_customers')
+                field: customer_id
+
+  - name: stg_sales_stores
+    columns:
+      - name: store_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_sales_staffs
+    columns:
+      - name: staff_id
+        tests:
+          - unique
+          - not_null
+      
+      - name: manager_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_sales_staffs')
+                field: staff_id
+
+  - name: stg_sales_customers
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
