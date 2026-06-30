@@ -10,6 +10,8 @@ models:
       - name: order_id
         tests:
           - not_null
+          - accepted_values:
+              values: ['licorne', 'cheval']
       - name: product_id
         tests:
           - not_null
